@@ -148,20 +148,19 @@
         return;
       }
 
+      // Email update send karega
       sendResponseToOwner(nameInput, "YES");
 
+      // Song Play karega
       const audio = document.getElementById('chogadaAudio');
       audio.play().catch(e => console.log('Audio playback error:', e));
 
+      // Celebration effect
       confetti({
-        particleCount: 180,
-        spread: 100,
+        particleCount: 200,
+        spread: 120,
         origin: { y: 0.6 }
       });
-
-      setTimeout(() => {
-        alert("Yay! " + nameInput + ", Chaliye Chogada pe Dandiya khelte hain! 🎉💃🪘");
-      }, 400);
     }
   </script>
 
