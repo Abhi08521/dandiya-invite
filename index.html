@@ -58,12 +58,16 @@
             z-index: 2;
             position: relative;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px; /* Buttons ke beech space */
         }
 
         h1 {
             color: #fff;
-            font-size: 2rem;
-            margin-bottom: 30px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px #000;
         }
 
@@ -85,16 +89,16 @@
             transform: scale(0.95);
         }
 
-        /* NO BUTTON - BAHUT CHHOTA */
+        /* NO BUTTON - THODA BADA AUR ALAG SE */
         #no-btn {
-            font-size: 0.6rem;
-            padding: 2px 5px;
+            font-size: 1.2rem; /* Size bada kar diya */
+            padding: 10px 25px;
             background-color: #555;
-            color: #aaa;
-            border: 1px solid #777;
-            border-radius: 3px;
-            position: absolute;
+            color: #fff;
+            border: 2px solid #777;
+            border-radius: 8px;
             cursor: pointer;
+            position: relative; /* Shuru me normal position me rahega */
             z-index: 3;
             transition: all 0.3s ease;
         }
@@ -103,22 +107,24 @@
 </head>
 <body>
 
-    <!-- Dandiya Stickers (Aap chahein toh emoji ki jagah image daal sakte hain) -->
+    <!-- Dandiya Stickers -->
     <div class="sticker left">🥁</div>
     <div class="sticker right">💃</div>
 
     <div class="content">
         <h1>Kaun mere sath Dandiya khelna chahta hai?</h1>
         
-        <!-- Yes Button -->
-        <button id="yes-btn">YES ✅</button>
-        
-        <!-- No Button (Shuru me Yes ke paas hi rahega) -->
-        <button id="no-btn" style="top: 70%; left: 55%;">No ❌</button>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <!-- Yes Button -->
+            <button id="yes-btn">YES ✅</button>
+            
+            <!-- No Button (Shuru me Yes ke niche rahega) -->
+            <button id="no-btn">No ❌</button>
+        </div>
     </div>
 
     <!-- YAHAN APNE DANDIYA SONG KA MP3 LINK DAALEIN -->
-    <audio id="dandiya-song" src="329343525-dandiya-beats-loop (2).m4a" loop></audio>
+    <audio id="dandiya-song" src="YOUR_SONG_LINK_HERE.mp3" loop></audio>
 
     <script>
         const noBtn = document.getElementById('no-btn');
@@ -127,17 +133,20 @@
 
         // No button bhaagne ka logic
         function moveNoButton() {
-            // Random position generate karna
-            const randomX = Math.floor(Math.random() * 80) + 10; // 10% se 90% ke beech
-            const randomY = Math.floor(Math.random() * 80) + 10;
+            // Screen ke random position par bhejne ke liye 'fixed' position use karenge
+            noBtn.style.position = 'fixed';
             
-            noBtn.style.position = 'absolute';
-            noBtn.style.left = randomX + '%';
-            noBtn.style.top = randomY + '%';
+            // Random position generate karna (10% se 80% ke beech, taaki screen se bahar na jaye)
+            const randomX = Math.floor(Math.random() * 70) + 10; 
+            const randomY = Math.floor(Math.random() * 70) + 10;
             
-            // Click karne par gayab ya unclickable ho jaye
+            noBtn.style.left = randomX + 'vw'; // Viewport width ke hisaab se
+            noBtn.style.top = randomY + 'vh';  // Viewport height ke hisaab se
+            
+            // Click karne par hat jaye aur unclickable ho jaye
             noBtn.style.pointerEvents = 'none';
-            noBtn.style.opacity = '0.3'; // Halka sa fade ho jaye
+            noBtn.style.opacity = '0.2'; // Halka sa fade ho jaye
+            noBtn.style.zIndex = '-1'; // Peeche chala jaye
         }
 
         // Desktop par mouse le jaane par bhaagega
@@ -151,8 +160,7 @@
         yesBtn.addEventListener('click', function() {
             // 1. Song Play Karein
             song.play().catch(error => {
-                console.log("Song play karne me error aayi (Browser policy): ", error);
-                alert("Song play nahi ho paya. Kripya page par ek baar click karein.");
+                console.log("Song play karne me error aayi: ", error);
             });
 
             // 2. Naam Puchein
@@ -161,7 +169,6 @@
                 
                 if (userName) {
                     alert("Wow " + userName + "! Chaliye Dandiya shuru karein! 🎉💃🕺");
-                    // Yahan aap chahein toh aage kuch aur bhi karwa sakte hain
                 }
             }, 500); // 0.5 second ka delay taaki song start ho jaye
         });
