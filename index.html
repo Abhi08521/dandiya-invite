@@ -17,8 +17,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #111 url('https://raw.githubusercontent.com/Abhi08521/dandiya-invite/main/IMG_20250925_094246.jpg') no-repeat center center fixed;
+      background-image: url('IMG_20250925_094246.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
       background-size: cover;
+      background-attachment: fixed;
+      background-color: #333;
       font-family: Arial, sans-serif;
       text-align: center;
       overflow: hidden;
@@ -29,7 +33,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.35);
       z-index: 0;
     }
 
@@ -102,7 +106,6 @@
       z-index: 4;
     }
 
-    /* Canvas for Confetti */
     #confettiCanvas {
       position: absolute;
       top: 0;
@@ -116,8 +119,10 @@
 </head>
 <body>
 
-  <!-- Working Audio File -->
-  <audio id="chogadaAudio" src="https://ia801503.us.archive.org/15/items/chogada-loveyatri/Chogada.mp3" preload="auto"></audio>
+  <!-- Direct Audio Source -->
+  <audio id="chogadaAudio" crossorigin="anonymous" preload="auto">
+    <source src="https://ia801503.us.archive.org/15/items/chogada-loveyatri/Chogada.mp3" type="audio/mpeg">
+  </audio>
 
   <canvas id="confettiCanvas"></canvas>
 
@@ -169,20 +174,16 @@
         return;
       }
 
-      // 1. Send details to Formspree email
       sendResponseToOwner(nameInput, "YES");
 
-      // 2. Play Song
       const audio = document.getElementById('chogadaAudio');
       audio.play().catch(err => {
-        console.log("Audio play error: ", err);
+        console.log("Audio Error:", err);
       });
 
-      // 3. Trigger Confetti Blast
       startConfetti();
     }
 
-    // Custom Confetti Effect
     function startConfetti() {
       const canvas = document.getElementById('confettiCanvas');
       const ctx = canvas.getContext('2d');
@@ -199,8 +200,7 @@
           y: Math.random() * canvas.height - canvas.height,
           size: Math.random() * 10 + 5,
           color: colors[Math.floor(Math.random() * colors.length)],
-          speed: Math.random() * 5 + 2,
-          angle: Math.random() * 360
+          speed: Math.random() * 5 + 2
         });
       }
 
