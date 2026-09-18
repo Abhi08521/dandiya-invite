@@ -14,26 +14,27 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      /* Upload hui photo exact background me set hai */
-      background: url('IMG_20250925_094246.jpg') no-repeat center center fixed;
+      /* Background Photo via direct GitHub Raw URL */
+      background: url('https://raw.githubusercontent.com/Abhi08521/dandiya-invite/main/IMG_20250925_094246.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: Arial, sans-serif;
       text-align: center;
       overflow: hidden;
     }
 
+    /* Soft overlay so text remains easily readable */
     body::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.3);
       z-index: 0;
     }
 
     .card {
       position: relative;
       z-index: 1;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       padding: 30px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
@@ -91,7 +92,8 @@
 </head>
 <body>
 
-  <audio id="dandiyaAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  <!-- Real Garba Beats Audio -->
+  <audio id="dandiyaAudio" src="https://actions.google.com/sounds/v1/foley/beating_a_drum.ogg" loop></audio>
 
   <div class="card">
     <div class="sticker">🪘 💃 🕺 🪘</div>
@@ -116,7 +118,7 @@
 
     function celebrate() {
       const audio = document.getElementById('dandiyaAudio');
-      audio.play();
+      audio.play().catch(e => console.log('Audio error:', e));
 
       confetti({
         particleCount: 150,
