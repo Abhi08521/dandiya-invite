@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dandiya Invitation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #ffe6f0;
+      /* Dandiya Pattern Background */
+      background-image: radial-gradient(#ff0055 10%, transparent 11%), radial-gradient(#ffcc00 10%, transparent 11%);
+      background-size: 60px 60px;
+      background-position: 0 0, 30px 30px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      border: 4px solid #ff0055;
+      max-width: 90%;
+      position: relative;
+    }
+
+    .sticker {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #d6004c;
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      min-height: 80px;
+    }
+
+    /* Bada YES Button */
+    .yes-btn {
+      padding: 20px 40px;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      background-color: #28a745;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+      transition: transform 0.2s;
+    }
+
+    .yes-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* Chhota NO Button */
+    .no-btn {
+      padding: 5px 10px;
+      font-size: 10px;
+      color: white;
+      background-color: #dc3545;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      position: absolute;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="sticker">🪘 💃 🕺 🪘</div>
+    <h1>Kaun mere sath dandiya khelna chahta hai?</h1>
+    
+    <div class="btn-container">
+      <button class="yes-btn" onclick="celebrate()">YES! 💃</button>
+      <button class="no-btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
+    </div>
+  </div>
+
+  <script>
+    function moveButton() {
+      const btn = document.getElementById('noBtn');
+      // Screen ki random width aur height calculate karein
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      
+      btn.style.position = 'fixed';
+      btn.style.left = x + 'px';
+      btn.style.top = y + 'px';
+    }
+
+    function celebrate() {
+      alert("Yay! Chalye dandiya khelte hain! 🎉💃🪘");
+    }
+  </script>
+
+</body>
+</html>
+
