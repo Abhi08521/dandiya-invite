@@ -17,12 +17,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-image: url('IMG_20250925_094246.jpg');
-      background-repeat: no-repeat;
-      background-position: center center;
+      /* Relative path for local github repository image */
+      background: #111 url('./IMG_20250925_094246.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-attachment: fixed;
-      background-color: #333;
       font-family: Arial, sans-serif;
       text-align: center;
       overflow: hidden;
@@ -33,7 +30,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
       z-index: 0;
     }
 
@@ -119,9 +116,9 @@
 </head>
 <body>
 
-  <!-- Direct Audio Source -->
-  <audio id="chogadaAudio" crossorigin="anonymous" preload="auto">
-    <source src="https://ia801503.us.archive.org/15/items/chogada-loveyatri/Chogada.mp3" type="audio/mpeg">
+  <!-- Audio Element -->
+  <audio id="chogadaAudio" preload="auto">
+    <source src="https://actions.google.com/sounds/v1/foley/beating_a_drum.ogg" type="audio/ogg">
   </audio>
 
   <canvas id="confettiCanvas"></canvas>
@@ -177,9 +174,7 @@
       sendResponseToOwner(nameInput, "YES");
 
       const audio = document.getElementById('chogadaAudio');
-      audio.play().catch(err => {
-        console.log("Audio Error:", err);
-      });
+      audio.play().catch(err => console.log("Audio Error:", err));
 
       startConfetti();
     }
