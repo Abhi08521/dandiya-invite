@@ -6,15 +6,21 @@
   <title>Dandiya Invitation</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 0;
       height: 100vh;
+      width: 100vw;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: url('https://raw.githubusercontent.com/Abhi08521/dandiya-invite/main/IMG_20250925_094246.jpg') no-repeat center center fixed;
+      /* Background photo from repository */
+      background: #111 url('IMG_20250925_094246.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
@@ -25,24 +31,24 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.45);
       z-index: 0;
     }
 
     .card {
       position: relative;
       z-index: 1;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 25px 20px;
+      background: rgba(255, 255, 255, 0.92);
+      padding: 30px 20px;
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       border: 4px solid #ff0055;
-      max-width: 85%;
-      width: 320px;
+      max-width: 90%;
+      width: 330px;
     }
 
     .sticker {
-      font-size: 40px;
+      font-size: 42px;
       margin-bottom: 5px;
     }
 
@@ -50,15 +56,16 @@
       color: #d6004c;
       font-size: 20px;
       margin-bottom: 15px;
+      font-weight: bold;
     }
 
     input[type="text"] {
-      width: 85%;
-      padding: 10px;
-      margin-bottom: 15px;
+      width: 90%;
+      padding: 12px;
+      margin-bottom: 18px;
       border: 2px solid #ff0055;
-      border-radius: 8px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 15px;
       text-align: center;
       outline: none;
     }
@@ -84,8 +91,8 @@
     }
 
     .no-btn {
-      padding: 6px 12px;
-      font-size: 12px;
+      padding: 8px 14px;
+      font-size: 13px;
       color: white;
       background-color: #dc3545;
       border: none;
@@ -97,7 +104,7 @@
 </head>
 <body>
 
-  <!-- Working Dandiya / Chogada Audio Source -->
+  <!-- Chogada Tara Pure MP3 Audio -->
   <audio id="chogadaAudio" src="https://ia801503.us.archive.org/15/items/chogada-loveyatri/Chogada.mp3" preload="auto"></audio>
 
   <div class="card">
@@ -148,12 +155,12 @@
         return;
       }
 
-      // Email tracker send karega
+      // Track response via Formspree
       sendResponseToOwner(nameInput, "YES");
 
-      // Song Play karega (Bina kisi alert popup ke)
-      const audio = document.getElementById('https://youtu.be/asYxxtiWUyw?si=ZbtuLx-qDAzpFB-x');
-      audio.play().catch(e => console.log(:', e));
+      // Play Chogada song
+      const audio = document.getElementById('chogadaAudio');
+      audio.play().catch(e => console.log('Audio error:', e));
 
       // Celebration Confetti
       confetti({
