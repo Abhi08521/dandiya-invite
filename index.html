@@ -1,64 +1,225 @@
-    .yes-btn:active {
-      transform: scale(0.95);
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dandiya Invitation</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    /* Chhota NO Button */
+    body {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #111 url('https://raw.githubusercontent.com/Abhi08521/dandiya-invite/main/IMG_20250925_094246.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      border: 4px solid #ff0055;
+      max-width: 90%;
+      width: 320px;
+    }
+
+    .sticker {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #d6004c;
+      font-size: 20px;
+      margin-bottom: 18px;
+      font-weight: bold;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 2px solid #ff0055;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      outline: none;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      min-height: 50px;
+    }
+
+    .yes-btn {
+      padding: 12px 26px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background-color: #28a745;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+      z-index: 3;
+    }
+
     .no-btn {
-      padding: 5px 10px;
-      font-size: 10px;
+      padding: 10px 18px;
+      font-size: 14px;
       color: white;
       background-color: #dc3545;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: all 0.2s ease;
+      z-index: 4;
+    }
+
+    /* Canvas for Confetti */
+    #confettiCanvas {
       position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10;
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Song (Online Garba Track) -->
-  <audio id="dandiyaAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+  <!-- Working Audio File -->
+  <audio id="chogadaAudio" src="https://ia801503.us.archive.org/15/items/chogada-loveyatri/Chogada.mp3" preload="auto"></audio>
+
+  <canvas id="confettiCanvas"></canvas>
 
   <div class="card">
     <div class="sticker">🪘 💃 🕺 🪘</div>
     <h1>Kaun mere sath dandiya khelna chahta hai?</h1>
     
+    <input type="text" id="visitorName" placeholder="Aapka Naam Ya Email..." required />
+
     <div class="btn-container">
-      <button class="yes-btn" onclick="celebrate()">YES! 💃</button>
+      <button class="yes-btn" onclick="handleYes()">YES! 💃</button>
       <button class="no-btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
     </div>
   </div>
 
   <script>
+    let noCount = 0;
+    const formspreeEndpoint = "https://formspree.io/f/mjykkboo";
+
     function moveButton() {
+      noCount++;
       const btn = document.getElementById('noBtn');
-      const x = Math.random() * (window.innerWidth - 80);
-      const y = Math.random() * (window.innerHeight - 40);
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
       
       btn.style.position = 'fixed';
       btn.style.left = x + 'px';
       btn.style.top = y + 'px';
     }
 
-    function celebrate() {
-      // 1. Song play karein
-      const audio = document.getElementById('dandiyaAudio');
-      audio.play();
+    function sendResponseToOwner(name, responseType) {
+      fetch(formspreeEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Visitor_Info: name,
+          Response: responseType,
+          No_Clicked_Count: noCount,
+          Time: new Date().toLocaleString()
+        })
+      }).catch(err => console.log("Tracking error:", err));
+    }
 
-      // 2. Screen par phatake / confetti celebration effect
-      confetti({
-        particleCount: 150,
-        spread: 80,
-        origin: { y: 0.6 }
+    function handleYes() {
+      const nameInput = document.getElementById('visitorName').value.trim();
+      
+      if (!nameInput) {
+        alert("Pehle apna naam ya email likhein! 😊");
+        return;
+      }
+
+      // 1. Send details to Formspree email
+      sendResponseToOwner(nameInput, "YES");
+
+      // 2. Play Song
+      const audio = document.getElementById('chogadaAudio');
+      audio.play().catch(err => {
+        console.log("Audio play error: ", err);
       });
 
-      // 3. Sweet Alert Message
-      setTimeout(() => {
-        alert("Yay! Chalye dandiya khelte hain! 🎉💃🪘");
-      }, 500);
+      // 3. Trigger Confetti Blast
+      startConfetti();
+    }
+
+    // Custom Confetti Effect
+    function startConfetti() {
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = [];
+      const numberOfPieces = 150;
+      const colors = ['#ff0055', '#28a745', '#ffc107', '#007bff', '#e83e8c', '#ffffff'];
+
+      for (let i = 0; i < numberOfPieces; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height - canvas.height,
+          size: Math.random() * 10 + 5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          speed: Math.random() * 5 + 2,
+          angle: Math.random() * 360
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+          ctx.fill();
+          p.y += p.speed;
+          if (p.y > canvas.height) p.y = 0;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
     }
   </script>
 
-</body> 
+</body>
 </html>
+
