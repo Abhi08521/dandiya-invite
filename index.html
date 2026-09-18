@@ -14,77 +14,82 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      /* Background Photo via direct GitHub Raw URL */
       background: url('https://raw.githubusercontent.com/Abhi08521/dandiya-invite/main/IMG_20250925_094246.jpg') no-repeat center center fixed;
       background-size: cover;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       text-align: center;
       overflow: hidden;
     }
 
-    /* Soft overlay so text remains easily readable */
     body::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0, 0, 0, 0.35);
       z-index: 0;
     }
 
     .card {
       position: relative;
       z-index: 1;
-      background: rgba(255, 255, 255, 0.94);
-      padding: 30px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 25px 20px;
       border-radius: 20px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
       border: 4px solid #ff0055;
       max-width: 85%;
+      width: 320px;
     }
 
     .sticker {
-      font-size: 45px;
-      margin-bottom: 10px;
+      font-size: 40px;
+      margin-bottom: 5px;
     }
 
     h1 {
       color: #d6004c;
-      font-size: 22px;
-      margin-bottom: 30px;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 2px solid #ff0055;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      outline: none;
     }
 
     .btn-container {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 20px;
-      min-height: 80px;
+      gap: 15px;
+      min-height: 60px;
     }
 
     .yes-btn {
-      padding: 18px 36px;
-      font-size: 22px;
+      padding: 14px 28px;
+      font-size: 20px;
       font-weight: bold;
       color: white;
       background-color: #28a745;
       border: none;
-      border-radius: 15px;
+      border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
-      transition: transform 0.2s;
-    }
-
-    .yes-btn:active {
-      transform: scale(0.95);
     }
 
     .no-btn {
-      padding: 5px 10px;
-      font-size: 10px;
+      padding: 6px 12px;
+      font-size: 12px;
       color: white;
       background-color: #dc3545;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       position: absolute;
     }
@@ -92,21 +97,27 @@
 </head>
 <body>
 
-  <!-- Real Garba Beats Audio -->
-  <audio id="dandiyaAudio" src="https://actions.google.com/sounds/v1/foley/beating_a_drum.ogg" loop></audio>
+  <!-- Chogada Song Audio -->
+  <audio id="chogadaAudio" src="https://cdnsongs.com/music/data/Hindi/201808/Loveyatri/128/Chogada_1.mp3" preload="auto"></audio>
 
   <div class="card">
     <div class="sticker">🪘 💃 🕺 🪘</div>
     <h1>Kaun mere sath dandiya khelna chahta hai?</h1>
     
+    <input type="text" id="visitorName" placeholder="Aapka Naam Likhein..." required />
+
     <div class="btn-container">
-      <button class="yes-btn" onclick="celebrate()">YES! 💃</button>
+      <button class="yes-btn" onclick="handleYes()">YES! 💃</button>
       <button class="no-btn" id="noBtn" onmouseover="moveButton()" onclick="moveButton()">No</button>
     </div>
   </div>
 
   <script>
+    let noCount = 0;
+    const formspreeEndpoint = "https://formspree.io/f/mjykkboo";
+
     function moveButton() {
+      noCount++;
       const btn = document.getElementById('noBtn');
       const x = Math.random() * (window.innerWidth - 80);
       const y = Math.random() * (window.innerHeight - 40);
@@ -116,19 +127,41 @@
       btn.style.top = y + 'px';
     }
 
-    function celebrate() {
-      const audio = document.getElementById('dandiyaAudio');
-      audio.play().catch(e => console.log('Audio error:', e));
+    function sendResponseToOwner(name, responseType) {
+      fetch(formspreeEndpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          Visitor_Name: name,
+          Response: responseType,
+          No_Clicked_Count: noCount,
+          Time: new Date().toLocaleString()
+        })
+      }).catch(err => console.log("Tracking error:", err));
+    }
+
+    function handleYes() {
+      const nameInput = document.getElementById('visitorName').value.trim();
+      
+      if (!nameInput) {
+        alert("Pehle apna naam toh bataiye! 😊");
+        return;
+      }
+
+      sendResponseToOwner(nameInput, "YES");
+
+      const audio = document.getElementById('chogadaAudio');
+      audio.play().catch(e => console.log('Audio playback error:', e));
 
       confetti({
-        particleCount: 150,
-        spread: 80,
+        particleCount: 180,
+        spread: 100,
         origin: { y: 0.6 }
       });
 
       setTimeout(() => {
-        alert("Yay! Chaliye dandiya khelte hain! 🎉💃🪘");
-      }, 500);
+        alert("Yay! " + nameInput + ", Chaliye Chogada pe Dandiya khelte hain! 🎉💃🪘");
+      }, 400);
     }
   </script>
 
