@@ -25,7 +25,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.4);
       z-index: 0;
     }
 
@@ -53,7 +53,7 @@
     }
 
     input[type="text"] {
-      width: 80%;
+      width: 85%;
       padding: 10px;
       margin-bottom: 15px;
       border: 2px solid #ff0055;
@@ -97,14 +97,14 @@
 </head>
 <body>
 
-  <!-- Chogada Song Audio -->
-  <audio id="chogadaAudio" src="https://cdnsongs.com/music/data/Hindi/201808/Loveyatri/128/Chogada_1.mp3" preload="auto"></audio>
+  <!-- Working Dandiya / Chogada Audio Source -->
+  <audio id="chogadaAudio" src="https://ia801503.us.archive.org/15/items/chogada-loveyatri/Chogada.mp3" preload="auto"></audio>
 
   <div class="card">
     <div class="sticker">🪘 💃 🕺 🪘</div>
     <h1>Kaun mere sath dandiya khelna chahta hai?</h1>
     
-    <input type="text" id="visitorName" placeholder="Aapka Naam Likhein..." required />
+    <input type="text" id="visitorName" placeholder="Aapka Naam Ya Email..." required />
 
     <div class="btn-container">
       <button class="yes-btn" onclick="handleYes()">YES! 💃</button>
@@ -132,7 +132,7 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          Visitor_Name: name,
+          Visitor_Info: name,
           Response: responseType,
           No_Clicked_Count: noCount,
           Time: new Date().toLocaleString()
@@ -144,18 +144,18 @@
       const nameInput = document.getElementById('visitorName').value.trim();
       
       if (!nameInput) {
-        alert("Pehle apna naam toh bataiye! 😊");
+        alert("Pehle apna naam ya email likhein! 😊");
         return;
       }
 
-      // Email update send karega
+      // Email tracker send karega
       sendResponseToOwner(nameInput, "YES");
 
-      // Song Play karega
+      // Song Play karega (Bina kisi alert popup ke)
       const audio = document.getElementById('chogadaAudio');
-      audio.play().catch(e => console.log('Audio playback error:', e));
+      audio.play().catch(e => console.log('Audio error:', e));
 
-      // Celebration effect
+      // Celebration Confetti
       confetti({
         particleCount: 200,
         spread: 120,
